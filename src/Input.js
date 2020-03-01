@@ -6,7 +6,8 @@ class Input extends React.Component {
 
     this.state = {
       inputValue: "",
-      language: "Swedish",
+      language: "swedish",
+      shape: "square",
       facing: "N",
       positionX: 0,
       positionY: 0, 
@@ -14,6 +15,9 @@ class Input extends React.Component {
 
     this.handleInput = this.handleInput.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChoiceOfLanguage = this.handleChoiceOfLanguage.bind(this)
+    this.handleChoiceOfShape = this.handleChoiceOfShape.bind(this)
+    this.toInputUppercase= this.toInputUppercase.bind(this)
   }
 
     handleSubmit(){
@@ -46,6 +50,7 @@ class Input extends React.Component {
           alert("Invalid command")
         }
       })
+      console.log(currentFacing, currentPosX, currentPosY)
       this.setState({facing: currentFacing, positionX: currentPosX, positionY: currentPosY});
     }
 
@@ -54,12 +59,46 @@ class Input extends React.Component {
         inputValue: event.target.value
       })
     }
+
+    handleChoiceOfLanguage(event){
+      this.setState({
+        language: event.target.value
+      })
+    }
+
+    handleChoiceOfShape(event){
+      this.setState({
+        shape: event.target.value
+      })
+      console.log(this)
+    }
+
+    toInputUppercase(event){
+      event.target.value = ("" + event.target.value).toUpperCase();
+    };
     
     render(){
       return(
         <div>
-          <input type="text" name="input" onChange={this.handleInput} />
+          <form>
+          {this.state.language === "swedish" ? <p> Välj språk: </p> : <p> Select language: </p> }
+          <label><input type="radio" value="swedish" checked={this.state.language === "swedish"} onChange={this.handleChoiceOfLanguage}/> Swedish </label>
+          <label><input type="radio" value="english" checked={this.state.language === "english"} onChange={this.handleChoiceOfLanguage}/> English </label>
+          
+          {this.state.language === "swedish" ? <p> Välj rumsform: </p> : <p> Select shape of room: </p> }
+          <label><input type="radio" value="square" checked={this.state.shape === "square"} onChange={this.handleChoiceOfShape}/> Square </label>
+          <label><input type="radio" value="circle" checked={this.state.shape === "circle"} onChange={this.handleChoiceOfShape}/> Circle </label>
+
+
+          <label> Column <input type="text" maxLength="1" style = {{width:15}} placeholder="0"/></label>
+          <label>Rows <input type="text" maxLength="1" style = {{width:15}} placeholder="0"/></label>
+          <label> X position <input type="text" maxLength="1" style = {{width:15}} placeholder="0"/></label>
+          <label> Y position <input type="text" maxLength="1" style = {{width:15}} placeholder="0"/></label>
+
+          {this.state.language === "swedish" ? <p> <br/> Skriv in kommando: <br/><br/> V - Vänd åt vänster, H - Vänd åt höger, G - Gå framåt </p> : <p> <br/> Type in command: <br/><br/> L - Turn to the left, R - Turn to the right, F - Move forward</p> }
+          <input type="text" name="input" onChange={this.handleInput} onInput={this.toInputUppercase}/>
           <button name="Button" onClick={this.handleSubmit}>GO!</button>
+          </form>
         </div>
       )
     }
