@@ -1,4 +1,8 @@
 import React from 'react';
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button'
 
 class Input extends React.Component {
   constructor(props){
@@ -28,6 +32,7 @@ class Input extends React.Component {
     this.handleColumns= this.handleColumns.bind(this);
     this.handleRows= this.handleRows.bind(this);
     this.handleRadius= this.handleRadius.bind(this);
+    this.handleReset= this.handleReset.bind(this);
   }
 
     handleSubmit(e){
@@ -40,11 +45,7 @@ class Input extends React.Component {
 
       let north = "N";
       let south = "S";
-      let east;
-      let west;
-      let forward
-      let left;
-      let right;
+      let east, west, forward, left, right;
 
       if(this.state.language === "swedish"){
         forward = "G"
@@ -75,7 +76,8 @@ class Input extends React.Component {
         alert("Start position, columns or rows invalid")
       }
       
-      const splitCommand = command.split('').forEach(c => {         
+      const splitCommand = command.split('').forEach(c => {
+        console.log(c, currentFacing, currentPosX, currentPosY)         
         if( (c === left && currentFacing === north) || (c === right && currentFacing === south) ) {
             currentFacing = west;
           } else if ((c === right && currentFacing === north) || (c === left && currentFacing === south)) {
@@ -85,11 +87,11 @@ class Input extends React.Component {
           } else if ((c === right && currentFacing === east) || (c === left && currentFacing === west)) {
             currentFacing = south;
           } else if (c === forward && currentFacing === north){
-            currentPosY++;
+            currentPosY--;
           } else if (c === forward && currentFacing === east){
             currentPosX++;
           } else if (c === forward && currentFacing === south){
-            currentPosY--;
+            currentPosY++;
           } else if (c === forward && currentFacing === west){
             currentPosX--;
           } else {
@@ -196,30 +198,56 @@ class Input extends React.Component {
     toInputUppercase(event){
       event.target.value = ("" + event.target.value).toUpperCase();
     };
+
+    handleReset(){
+      this.setState({
+        inputCommand: "",
+        language: "swedish",
+        shape: "square",
+        facing: "N",
+        positionX: 0,
+        positionY: 0,
+        columns: 0,
+        rows: 0,
+        radius: 0,
+      })
+    }
     
     render(){
       return(
         <div>
-          <form>
-          {this.state.language === "swedish" ? <p> Välj språk: </p> : <p> Select language: </p> }
-          <label><input type="radio" value="swedish" checked={this.state.language === "swedish"} onChange={this.handleChoiceOfLanguage}/> Swedish </label>
-          <label><input type="radio" value="english" checked={this.state.language === "english"} onChange={this.handleChoiceOfLanguage}/> English </label>
-          
-          {this.state.language === "swedish" ? <p> Välj rumsform: </p> : <p> Select shape of room: </p> }
-          <label><input type="radio" value="square" checked={this.state.shape === "square"} onChange={this.handleChoiceOfShape}/> Square </label>
-          <label><input type="radio" value="circle" checked={this.state.shape === "circle"} onChange={this.handleChoiceOfShape}/> Circle </label>
+          <Container>
+              <h1>Robot Control</h1>
+              
+              <Row className="justify-content-md-center"> 
+                {this.state.language === "swedish" ? <p> Välj språk: </p> : <p> Select language: </p> }
+                <label style={{marginRight: 10, marginLeft: 10}}><input type="radio" value="swedish" checked={this.state.language === "swedish"} onChange={this.handleChoiceOfLanguage} /> Swedish </label>
+                <label><input type="radio" value="english" checked={this.state.language === "english"} onChange={this.handleChoiceOfLanguage}/> English </label>
+              </Row>
 
-          <label> <br/><br/> Start position X <input type="number" style = {{width:30}} placeholder="0" onChange={this.handlePosX}/></label>
-          <label> Start position Y <input type="number" style = {{width:30}} placeholder="0" onChange={this.handlePosY}/></label>
-          
-          {this.state.shape === "square" ? 
-          <ul><label> Column <input type="number" style = {{width:30}} placeholder="0" onChange={this.handleColumns}/></label><label> Rows <input type="number" style = {{width:30}} placeholder="0" onChange={this.handleRows}/></label></ul>
-          : <label> Radius <input type="number" style = {{width:30}} placeholder="0" onChange={this.handleRadius}/></label>}
+              <Row className="justify-content-md-center"> 
+                {this.state.language === "swedish" ? <p> Välj rumsform: </p> : <p> Select shape of room: </p> }
+                <label style={{marginRight: 10, marginLeft: 10}}><input type="radio" value="square" checked={this.state.shape === "square"} onChange={this.handleChoiceOfShape}/> Square </label>
+                <label><input type="radio" value="circle" checked={this.state.shape === "circle"} onChange={this.handleChoiceOfShape}/> Circle </label>
+              </Row>
 
-          {this.state.language === "swedish" ? <p> <br/> Skriv in kommando: <br/><br/> V - Vänd åt vänster, H - Vänd åt höger, G - Gå framåt </p> : <p> <br/> Type in command: <br/><br/> L - Turn to the left, R - Turn to the right, F - Move forward</p> }
-          <input type="text" name="input" onChange={this.handleInput} onInput={this.toInputUppercase}/>
-          <button name="Button" onClick={this.handleSubmit}>GO!</button>
-          </form>
+              <Row className="justify-content-md-center">
+                <label style={{marginRight: 10}}> Start position X <input type="number" style = {{width:30}} placeholder="0" onChange={this.handlePosX}/></label>
+                <label> Start position Y <input type="number" style = {{width:30}} placeholder="0" onChange={this.handlePosY}/></label>
+              </Row>
+
+              <Row className="justify-content-md-center">
+                {this.state.shape === "square" ? 
+                <ul><label style={{marginRight: 10}}> Column <input type="number" style = {{width:30}} placeholder="0" onChange={this.handleColumns}/></label><label> Rows <input type="number" style = {{width:30}} placeholder="0" onChange={this.handleRows}/></label></ul>
+                : <label> Radius <input type="number" style = {{width:30}} placeholder="0" onChange={this.handleRadius}/></label>}
+              </Row>
+
+              {this.state.language === "swedish" ? <p> <br/> Skriv in kommando: <br/><br/> V - Vänd åt vänster, H - Vänd åt höger, G - Gå framåt </p> : <p> <br/> Type in command: <br/><br/> L - Turn to the left, R - Turn to the right, F - Move forward</p> }
+              <input type="text" name="input" onChange={this.handleInput} onInput={this.toInputUppercase}/>
+              <Button name="Button" variant="primary" style={{margin: 5}} onClick={this.handleSubmit}>GO!</Button>
+              <p> Position: ( {this.state.positionX} , {this.state.positionY} ) {this.state.facing}</p>
+              <Button name="Button" variant="dark" size="sm" onClick={this.handleReset}>Reset</Button>
+          </Container>
         </div>
       )
     }
