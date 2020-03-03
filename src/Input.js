@@ -5,7 +5,7 @@ class Input extends React.Component {
     super(props)
 
     this.state = {
-      inputValue: "",
+      inputCommand: "",
       language: "swedish",
       shape: "square",
       facing: "N",
@@ -33,55 +33,121 @@ class Input extends React.Component {
     handleSubmit(e){
       e.preventDefault();
 
-      let command = this.state.inputValue;
+      let command = this.state.inputCommand;
       let currentPosX = this.state.positionX;
       let currentPosY = this.state.positionY;
       let currentFacing = this.state.facing;
 
-      console.log(command);
+      let north = "N";
+      let south = "S";
+      let east;
+      let west;
+      let forward
+      let left;
+      let right;
 
-      if(this.state.shape === "square"){
-        handleSquare(command, currentPosX, currentPosY, currentFacing)
+      if(this.state.language === "swedish"){
+        forward = "G"
+        left = "V"
+        right = "H"
+        east = "Ö"
+        west = "V"
       } else {
-        handleCircle(command, currentPosX, currentPosY, currentFacing)
+        forward = "F"
+        left = "L"
+        right = "R"
+        east = "E"
+        west = "W"
       }
 
+      if(this.state.shape === "square"){
+        this.handleSquare(command, currentPosX, currentPosY, currentFacing, forward, left, right, north, south, east, west)
+      } else {
+        this.handleCircle(command, currentPosX, currentPosY, currentFacing, forward, left, right, north, south, east, west)
+      }
     }
 
-      handleSquare(command, currentPosX, currentPosY, currentFacing){
+    handleSquare(command, currentPosX, currentPosY, currentFacing, forward, left, right, north, south, east, west){
+      let cols = this.state.columns;
+      let rows = this.state.rows;
 
-      const splitCommand = command.split('').forEach(c => {
-        if( (c === "V" && currentFacing === "N") || (c === "H" && currentFacing === "S") ) {
-          currentFacing = "W";
-        } else if ((c === "H" && currentFacing === "N") || (c === "V" && currentFacing === "S")) {
-          currentFacing = "E";
-        } else if ((c === "V" && currentFacing === "E") || (c === "H" && currentFacing === "W")) {
-          currentFacing = "N";
-        } else if ((c === "H" && currentFacing === "E") || (c === "V" && currentFacing === "W")) {
-          currentFacing = "S";
-        } else if (c === "F" && currentFacing === "N"){
-          currentPosY++;
-        } else if (c === "F" && currentFacing === "E"){
-          currentPosX++;
-        } else if (c === "F" && currentFacing === "S"){
-          currentPosY--;
-        } else if (c === "F" && currentFacing === "W"){
-          currentPosX--;
-        } else {
-          alert("Invalid command")
-        }
+      if(cols < 0 || rows < 0 || currentPosX > cols || currentPosY > rows){
+        alert("Start position, columns or rows invalid")
+      }
+      
+      const splitCommand = command.split('').forEach(c => {         
+        if( (c === left && currentFacing === north) || (c === right && currentFacing === south) ) {
+            currentFacing = west;
+          } else if ((c === right && currentFacing === north) || (c === left && currentFacing === south)) {
+            currentFacing = east;
+          } else if ((c === left && currentFacing === east) || (c === right && currentFacing === west)) {
+            currentFacing = north;
+          } else if ((c === right && currentFacing === east) || (c === left && currentFacing === west)) {
+            currentFacing = south;
+          } else if (c === forward && currentFacing === north){
+            currentPosY++;
+          } else if (c === forward && currentFacing === east){
+            currentPosX++;
+          } else if (c === forward && currentFacing === south){
+            currentPosY--;
+          } else if (c === forward && currentFacing === west){
+            currentPosX--;
+          } else {
+            alert("Invalid command")
+          }
+
+          if(!(currentPosX >= 0 && currentPosX <= cols && currentPosY >= 0 && currentPosY <= rows)){
+            alert("Robot walked outside area")
+          }
       })
+      
       console.log(currentFacing, currentPosX, currentPosY)
       this.setState({facing: currentFacing, positionX: currentPosX, positionY: currentPosY});
     }
 
-    handleCircle(command, currentPosX, currentPosY, currentFacing){
+    handleCircle(command, currentPosX, currentPosY, currentFacing, forward, left, right, north, south, east, west){
+      let radius = this.state.radius;
+      let startX = currentPosX;
+      let startY = currentPosY;
 
+      if(Math.abs(startX) > radius || Math.abs(startY) > radius){
+        alert("Start position or radius invalid")
+      }
+
+      const splitCommand = command.split('').forEach(c => {         
+        if( (c === left && currentFacing === north) || (c === right && currentFacing === south) ) {
+            currentFacing = west;
+          } else if ((c === right && currentFacing === north) || (c === left && currentFacing === south)) {
+            currentFacing = east;
+          } else if ((c === left && currentFacing === east) || (c === right && currentFacing === west)) {
+            currentFacing = north;
+          } else if ((c === right && currentFacing === east) || (c === left && currentFacing === west)) {
+            currentFacing = south;
+          } else if (c === forward && currentFacing === north){
+            currentPosY++;
+          } else if (c === forward && currentFacing === east){
+            currentPosX++;
+          } else if (c === forward && currentFacing === south){
+            currentPosY--;
+          } else if (c === forward && currentFacing === west){
+            currentPosX--;
+          } else {
+            alert("Invalid command")
+          }
+
+          let d = Math.sqrt((Math.pow(startX - currentPosX, 2)) + Math.pow(startY - currentPosY, 2));
+          if(!(d <= radius)) {
+            alert("Robot walked outside area")
+          } 
+      })
+
+      console.log(currentFacing, currentPosX, currentPosY)
+      this.setState({facing: currentFacing, positionX: currentPosX, positionY: currentPosY});
     }
 
     handleInput(event){
       this.setState({
-        inputValue: event.target.value
+        inputCommand: event.target.value
       })
     }
 
