@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button'
 
-class Input extends React.Component {
+class RobotControl extends React.Component {
   constructor(props){
     super(props)
 
@@ -72,12 +72,12 @@ class Input extends React.Component {
       let cols = this.state.columns;
       let rows = this.state.rows;
 
-      if(cols < 0 || rows < 0 || currentPosX > cols || currentPosY > rows){
+      if(cols < 0 || rows < 0 || currentPosX < 0 || currentPosY < 0 || currentPosX > cols || currentPosY > rows){
         alert("Start position, columns or rows invalid")
+        return;
       }
       
-      const splitCommand = command.split('').forEach(c => {
-        console.log(c, currentFacing, currentPosX, currentPosY)         
+      command.split('').forEach(c => {         
         if( (c === left && currentFacing === north) || (c === right && currentFacing === south) ) {
             currentFacing = west;
           } else if ((c === right && currentFacing === north) || (c === left && currentFacing === south)) {
@@ -96,14 +96,16 @@ class Input extends React.Component {
             currentPosX--;
           } else {
             alert("Invalid command")
+            return;
           }
 
-          if(!(currentPosX >= 0 && currentPosX <= cols && currentPosY >= 0 && currentPosY <= rows)){
+          /*Checks if within square*/
+          if(!(currentPosX > 0 && currentPosX <= cols && currentPosY > 0 && currentPosY <= rows)){
             alert("Robot walked outside area")
+            return;
           }
       })
       
-      console.log(currentFacing, currentPosX, currentPosY)
       this.setState({facing: currentFacing, positionX: currentPosX, positionY: currentPosY});
     }
 
@@ -114,9 +116,10 @@ class Input extends React.Component {
 
       if(Math.abs(startX) > radius || Math.abs(startY) > radius){
         alert("Start position or radius invalid")
+        return;
       }
 
-      const splitCommand = command.split('').forEach(c => {         
+      command.split('').forEach(c => {         
         if( (c === left && currentFacing === north) || (c === right && currentFacing === south) ) {
             currentFacing = west;
           } else if ((c === right && currentFacing === north) || (c === left && currentFacing === south)) {
@@ -135,15 +138,17 @@ class Input extends React.Component {
             currentPosX--;
           } else {
             alert("Invalid command")
+            return;
           }
 
+          /* Checks if within circle */
           let d = Math.sqrt((Math.pow(startX - currentPosX, 2)) + Math.pow(startY - currentPosY, 2));
-          if(!(d <= radius)) {
+          if(!(d < radius)) {
             alert("Robot walked outside area")
+            return;
           } 
       })
 
-      console.log(currentFacing, currentPosX, currentPosY)
       this.setState({facing: currentFacing, positionX: currentPosX, positionY: currentPosY});
     }
 
@@ -211,6 +216,7 @@ class Input extends React.Component {
         rows: 0,
         radius: 0,
       })
+      console.log(this.state)
     }
     
     render(){
@@ -244,7 +250,7 @@ class Input extends React.Component {
 
               {this.state.language === "swedish" ? <p> <br/> Skriv in kommando: <br/><br/> V - Vänd åt vänster, H - Vänd åt höger, G - Gå framåt </p> : <p> <br/> Type in command: <br/><br/> L - Turn to the left, R - Turn to the right, F - Move forward</p> }
               <input type="text" name="input" onChange={this.handleInput} onInput={this.toInputUppercase}/>
-              <Button name="Button" variant="primary" style={{margin: 5}} onClick={this.handleSubmit}>GO!</Button>
+              <Button name="Button" id="submitButton" variant="primary" style={{margin: 5}} onClick={this.handleSubmit}>GO!</Button>
               <p> Position: ( {this.state.positionX} , {this.state.positionY} ) {this.state.facing}</p>
               <Button name="Button" variant="dark" size="sm" onClick={this.handleReset}>Reset</Button>
           </Container>
@@ -253,4 +259,4 @@ class Input extends React.Component {
     }
 }
 
-export default Input;
+export default RobotControl;

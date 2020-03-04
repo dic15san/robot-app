@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
-import Input from './Input';
+import RobotControl from './RobotControl';
 
 class App extends React.Component {
 
   render(){
     return (
       <div className="App">
-        <Input />
+        <RobotControl />
       </div>
     );
   }
