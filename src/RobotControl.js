@@ -14,9 +14,7 @@ class RobotControl extends React.Component {
       shape: "square",
       facing: "N",
       positionX: 0,
-      finalPositionX: "",
       positionY: 0,
-      finalPositionY: "",
       columns: 0,
       rows: 0,
       radius: 0, 
@@ -112,7 +110,8 @@ class RobotControl extends React.Component {
           }
       })
       
-      if (bool === true) this.setState({facing: currentFacing, positionX: currentPosX, positionY: currentPosY, finalPositionX: currentPosX, finalPositionY: currentPosY});
+      /* only updates if within area */
+      if (bool === true) this.setState({facing: currentFacing, positionX: currentPosX, positionY: currentPosY});
     }
 
     handleCircle(command, currentPosX, currentPosY, currentFacing, forward, left, right, north, south, east, west){
@@ -158,8 +157,9 @@ class RobotControl extends React.Component {
             return;
           } 
       })
-
-      if(bool === true) this.setState({facing: currentFacing, positionX: currentPosX, finalPositionX: currentPosX, positionY: currentPosY, finalPositionY: currentPosY});
+      
+    /* only updates if within area */
+      if(bool === true) this.setState({facing: currentFacing, positionX: currentPosX, positionY: currentPosY});
     }
 
     handleInput(event){
@@ -249,8 +249,8 @@ class RobotControl extends React.Component {
               </Row>
 
               <Row className="justify-content-md-center">
-                <label style={{marginRight: 10}}> Start position X <input type="number" style = {{width:40}} placeholder="0" onChange={this.handlePosX} value={this.state.positionX}/></label>
-                <label> Start position Y <input type="number" style = {{width:40}} placeholder="0" onChange={this.handlePosY} value={this.state.positionY}/></label>
+                <label style={{marginRight: 10}}> Position X <input type="number" style = {{width:40}} placeholder="0" onChange={this.handlePosX} value={this.state.positionX}/></label>
+                <label> Position Y <input type="number" style = {{width:40}} placeholder="0" onChange={this.handlePosY} value={this.state.positionY}/></label>
               </Row>
 
               <Row className="justify-content-md-center">
@@ -262,7 +262,7 @@ class RobotControl extends React.Component {
               {this.state.language === "swedish" ? <p> <br/> Skriv in kommando: <br/><br/> V - Vänd åt vänster, H - Vänd åt höger, G - Gå framåt </p> : <p> <br/> Type in command: <br/><br/> L - Turn to the left, R - Turn to the right, F - Move forward</p> }
               <input type="text" name="input" onChange={this.handleInput} onInput={this.toInputUppercase}/>
               <Button name="Button" id="submitButton" variant="primary" style={{margin: 5}} onClick={this.handleSubmit}>GO!</Button>
-              <p> Position: ( {this.state.finalPositionX} , {this.state.finalPositionY} ) {this.state.facing}</p>
+              <p> Position: ( {this.state.positionX} , {this.state.positionY} ) {this.state.facing}</p>
               <Button name="Button" variant="dark" size="sm" onClick={this.handleReset}>Reset</Button>
           </Container>
         </div>
