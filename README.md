@@ -22,5 +22,5 @@
 
 The user get alert message for invalid input or if the robot walks outside area.
 
-- if user click reset it must erase it command manually
+- if user click reset it must erase command manually
 - input fields position x and y will update to the current position
