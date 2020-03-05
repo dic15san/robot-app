@@ -57,7 +57,7 @@ describe('<RobotControl />', () => {
         window.alert = jest.fn();
         wrapper.setState({inputCommand: "HG", language: "swedish", shape: "square", facing: "N", positionX: 2, positionY: 2, columns: 2, rows: 2, radius: 0})
         wrapper.find('#submitButton').simulate('click', {preventDefault: () => {}})
-        expect(window.alert).toHaveBeenCalledWith("Robot walked outside area");
+        expect(window.alert).toHaveBeenCalledWith("Robot can't walk outside area");
     })
 })
 
@@ -67,7 +67,7 @@ describe('<RobotControl />', () => {
         window.alert = jest.fn();
         wrapper.setState({inputCommand: "HHG", language: "swedish", shape: "square", facing: "N", positionX: 2, positionY: 2, columns: 2, rows: 2, radius: 0})
         wrapper.find('#submitButton').simulate('click', {preventDefault: () => {}})
-        expect(window.alert).toHaveBeenCalledWith("Robot walked outside area");
+        expect(window.alert).toHaveBeenCalledWith("Robot can't walk outside area");
     })
 })
 
@@ -77,7 +77,7 @@ describe('<RobotControl />', () => {
         window.alert = jest.fn();
         wrapper.setState({inputCommand: "GG", language: "swedish", shape: "square", facing: "N", positionX: 2, positionY: 2, columns: 2, rows: 2, radius: 0})
         wrapper.find('#submitButton').simulate('click', {preventDefault: () => {}})
-        expect(window.alert).toHaveBeenCalledWith("Robot walked outside area");
+        expect(window.alert).toHaveBeenCalledWith("Robot can't walk outside area");
     })
 })
 
@@ -87,7 +87,7 @@ describe('<RobotControl />', () => {
         window.alert = jest.fn();
         wrapper.setState({inputCommand: "VGG", language: "swedish", shape: "square", facing: "N", positionX: 2, positionY: 2, columns: 2, rows: 2, radius: 0})
         wrapper.find('#submitButton').simulate('click', {preventDefault: () => {}})
-        expect(window.alert).toHaveBeenCalledWith("Robot walked outside area");
+        expect(window.alert).toHaveBeenCalledWith("Robot can't walk outside area");
     })
 })
 
@@ -97,7 +97,7 @@ describe('<RobotControl />', () => {
 describe('<RobotControl />', () => {
     it('should get correct position and facing direction', () => {
         const wrapper = shallow(<RobotControl/>);
-        wrapper.setState({inputCommand: "LFF", language: "english", shape: "square", facing: "N", positionX: 0, positionY: 0, columns: 0, rows: 0, radius: 5})
+        wrapper.setState({inputCommand: "LFF", language: "english", shape: "circle", facing: "N", positionX: 0, positionY: 0, columns: 0, rows: 0, radius: 5})
         wrapper.find('#submitButton').simulate('click', {preventDefault: () => {}})
         const positionX = wrapper.state().positionX;
         expect(positionX).toEqual(-2);
@@ -134,7 +134,7 @@ describe('<RobotControl />', () => {
         window.alert = jest.fn();
         wrapper.setState({inputCommand: "HGG", language: "swedish", shape: "circle", facing: "N", positionX: 1, positionY: 1, columns: 0, rows: 0, radius: 2})
         wrapper.find('#submitButton').simulate('click', {preventDefault: () => {}})
-        expect(window.alert).toHaveBeenCalledWith("Robot walked outside area");
+        expect(window.alert).toHaveBeenCalledWith("Robot can't walk outside area");
     })
 })
 
@@ -144,7 +144,7 @@ describe('<RobotControl />', () => {
         window.alert = jest.fn();
         wrapper.setState({inputCommand: "HHGG", language: "swedish", shape: "circle", facing: "N", positionX: 0, positionY: 0, columns: 0, rows: 0, radius: 2})
         wrapper.find('#submitButton').simulate('click', {preventDefault: () => {}})
-        expect(window.alert).toHaveBeenCalledWith("Robot walked outside area");
+        expect(window.alert).toHaveBeenCalledWith("Robot can't walk outside area");
     })
 })
 
@@ -154,7 +154,7 @@ describe('<RobotControl />', () => {
         window.alert = jest.fn();
         wrapper.setState({inputCommand: "G", language: "swedish", shape: "circle", facing: "N", positionX: 0, positionY: 0, columns: 0, rows: 0, radius: 1})
         wrapper.find('#submitButton').simulate('click', {preventDefault: () => {}})
-        expect(window.alert).toHaveBeenCalledWith("Robot walked outside area");
+        expect(window.alert).toHaveBeenCalledWith("Robot can't walk outside area");
     })
 })
 
@@ -164,7 +164,7 @@ describe('<RobotControl />', () => {
         window.alert = jest.fn();
         wrapper.setState({inputCommand: "VG", language: "swedish", shape: "circle", facing: "N", positionX: 0, positionY: 0, columns: 0, rows: 0, radius: 1})
         wrapper.find('#submitButton').simulate('click', {preventDefault: () => {}})
-        expect(window.alert).toHaveBeenCalledWith("Robot walked outside area");
+        expect(window.alert).toHaveBeenCalledWith("Robot can't walk outside area");
     })
 })
 
@@ -175,7 +175,7 @@ describe('<RobotControl />', () => {
     it('should get alert about invalid input command', () => {
         const wrapper = shallow(<RobotControl/>);
         window.alert = jest.fn();
-        wrapper.setState({inputCommand: "hej", language: "swedish", shape: "square", facing: "N", positionX: 0, positionY: 0, columns: 0, rows: 0, radius: 1})
+        wrapper.setState({inputCommand: "hej", language: "swedish", shape: "circle", facing: "N", positionX: 0, positionY: 0, columns: 0, rows: 0, radius: 1})
         wrapper.find('#submitButton').simulate('click', {preventDefault: () => {}})
         expect(window.alert).toHaveBeenCalledWith("Invalid command");
     })
