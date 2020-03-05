@@ -17,7 +17,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "./node_modules/.bin/eslint ."
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -36,6 +37,13 @@
   },
   "devDependencies": {
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2"
+    "enzyme-adapter-react-16": "^1.15.2",
+    "eslint-plugin-flowtype": "^3.13.0",
+    "fibers": "^4.0.2",
+    "jquery": "^1.9.1",
+    "lint": "^0.7.0",
+    "node-sass": "^4.13.1",
+    "sass": "^1.26.2",
+    "typescript": "^3.8.3"
   }
 }

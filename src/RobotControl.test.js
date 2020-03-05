@@ -1,10 +1,9 @@
-import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import RobotControl from './RobotControl';
-import { mount, shallow, render } from 'enzyme';
+import { Enzyme, shallow, configure} from 'enzyme';
 
-Enzyme.configure({ adapter: new Adapter() });
+configure({ adapter: new Adapter() });
 
 /* Square Tests */
 

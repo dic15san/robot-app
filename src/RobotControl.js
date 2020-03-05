@@ -238,14 +238,14 @@ class RobotControl extends React.Component {
               </Row>
 
               <Row className="justify-content-md-center">
-                <label style={{marginRight: 10}}> Start position X <input type="number" style = {{width:30}} placeholder="0" onChange={this.handlePosX}/></label>
-                <label> Start position Y <input type="number" style = {{width:30}} placeholder="0" onChange={this.handlePosY}/></label>
+                <label style={{marginRight: 10}}> Start position X <input type="number" style = {{width:40}} placeholder="0" onChange={this.handlePosX} value={this.state.positionX}/></label>
+                <label> Start position Y <input type="number" style = {{width:40}} placeholder="0" onChange={this.handlePosY} value={this.state.positionY}/></label>
               </Row>
 
               <Row className="justify-content-md-center">
                 {this.state.shape === "square" ? 
-                <ul><label style={{marginRight: 10}}> Column <input type="number" style = {{width:30}} placeholder="0" onChange={this.handleColumns}/></label><label> Rows <input type="number" style = {{width:30}} placeholder="0" onChange={this.handleRows}/></label></ul>
-                : <label> Radius <input type="number" style = {{width:30}} placeholder="0" onChange={this.handleRadius}/></label>}
+                <ul><label style={{marginRight: 10}}> Column <input type="number" style = {{width:40}} placeholder="0" onChange={this.handleColumns} value={this.state.columns}/></label><label> Rows <input type="number" style = {{width:40}} placeholder="0" onChange={this.handleRows} value={this.state.rows}/></label></ul>
+                : <label> Radius <input type="number" style = {{width:40}} placeholder="0" onChange={this.handleRadius} value={this.state.radius}/></label>}
               </Row>
 
               {this.state.language === "swedish" ? <p> <br/> Skriv in kommando: <br/><br/> V - Vänd åt vänster, H - Vänd åt höger, G - Gå framåt </p> : <p> <br/> Type in command: <br/><br/> L - Turn to the left, R - Turn to the right, F - Move forward</p> }
